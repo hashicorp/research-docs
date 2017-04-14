@@ -31,6 +31,7 @@ To get to a Minimum Viable Product in a timely manner, and develop an R&D pipeli
 * Deliverable 1: Validation and Explanation via Static Analysis.
 * Deliverable 2: Add Rating and Suggestion, but still based on Static Analysis.
 * Deliverable 3: Add Dynamic Analysis, so that suggestions and ratings consider the pattern of historical use, and not just the policy configuration.
+* Deliverable 4: Add useage summarization, to make Dynamic Analysis more efficient, especially in multi-datacenter scenario.
 
 # Design Notes
 
@@ -42,7 +43,7 @@ Effectively this will build `vault plan`, akin to `tf plan` and `nomad plan`:
 * Mulitple changes may be evaluated independently.
 * Changes may be chained: Evaluate one change using the successfully application of another change as the starting point.
 
-Techniques to consider for Valildation include:
+Techniques to consider for Validation include:
 
 * SAT-based constraint solving, ala http://emina.github.io/kodkod/
 
@@ -81,9 +82,13 @@ Techniques to consider include:
 
 Use techniques such as summarization or sketching to reduce the volume of data that needs to be retained to reason about usage patterns?
 
+## Deliverable 3: Usage Summarization
+
+To make usage-based analysis more efficient.
+
 Summarization and sketching may also help identify outliers:
 
-* Potential items to drop support for in new proposals?
+* Potential items to drop support for in new proposals.
 * Gateway to anomaly detection.
 
 # Relevant Work
