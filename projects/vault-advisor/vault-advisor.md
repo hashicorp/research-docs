@@ -6,202 +6,81 @@ Help security teams make their Vault-managed systems more secure, by validating 
 
 A by-product of this automation should be the ability to scale people processes, to manage more and larger systems efficiently and reliably.
 
-# Scope of Solution
+# Relationship to Security Design Principles
 
-The high level approach will be analyis of the Vault configuration and usage patterns, to find opportunities for improved configuration.
+Saltzer and Schroeder's 1975 paper [The Protection of Information in Computer Systems](https://www.acsac.org/secshelf/papers/protection_information.pdf) (summary [here](https://courses.cs.washington.edu/courses/cse484/14au/reading/look-at-1975.pdf) and slightly extended [here](https://cryptosmith.com/2013/10/19/security-design-principles/)) proposed 8 design principles for information protection mechanisms:
 
-There are many ways in which this can be realized. Two key characteristics of a given solution are:
+* **Economy of mechanism**: A simpler design is easier to test and validate.
+* **Fail-safe defaults**: Default Deny is the canonical example.
+* **Complete mediation**: Ideally, access rights should be validated every time an access occurs. Cached values should be used as little as possible (and we might add, in a principled manner).
+* **Open design**: Following Claude Shannon's 1948 dictum: "The enemy knows the system", security system designs should be subject to open review.
+* **Separation of privilege**: Prefer multi-person authorization.
+* **Least privilege**: Every person and program should operate with as few privileges as possible.
+* **Least common mechanism**: Users and programs should not share mechanisms except where absolutely necessary.
+* **Psychological acceptability**: The policy interface should reflect the user's mental model of protection. Users won't specify protections correctly if the specification doesn't make sense to them.
 
-* **Analysis Approach**
-  * **Static Analysis** considers only the Vault policy configuration.
-  * **Dynamic Analysis** considers both the (static) Vault policy configuration and the secret access patterns of principals (people, machines and services) recorded in the Vault audit log.
+They still make an excellent starting point for secure system design, 42 years later.
 
-* **Analysis Level**
-  * **Validation** of a potential change: Is the change valid, both generally and with the current (or some other) Vault configuration?
-  * **Explanation** of a potential change: If the change is valid, what will its effect be? If it is not valid, why not?
-  * **Rating** of a potential change: How does the change stack up, against (multiple) metrics and/or against other changes?
-  * **Suggestion** of potential changes: A ranked list of potential changes, with explanation and rating (that are of course all valid).
+Several of the principles are inherent in Vault:
 
-# Roadmap
+* **Economy of mechanism**
+  - Vault's APIs and CLI offer a rational set of mechanisms for organizations to build their security workflows on top of.
+  - By delegating many hard parts of the problem (such as selection and implementation of crypto algorithms) to Vault, customers are left with a simpler task in reviewing their system security.
+* **Fail-safe defaults**
+  - Vault's Default Deny approach is the gold-standard for the principle of fail-safe defaults.
+* **Open design**
+  - Vault's core code is open-source, and the full codebase undergoes periodic 3rd party security audit.
 
-To get to a Minimum Viable Product in a timely manner, and develop an R&D pipeline, we will look at defining a roadmap with a series of deliverables, that grow the scope of solution over time.
+The remaining principles can be supported by systems that use Vault, but *only when correctly configured*. This presents an opportunity for Vault Advisor to add value, by automatically detectiing violations of the design principles in Vault configurations and proposing preferable configurations that reduce the scope of or eliminate those violations.
 
-## Strawman Roadmap
+At a high level, the immediate opportunities for Vault Advisor to help with enforcing the remaining principles are as follows:
 
-* Deliverable 1: Validation and Explanation via Static Analysis.
-* Deliverable 2: Add Rating and Suggestion, but still based on Static Analysis.
-* Deliverable 3: Add Dynamic Analysis, so that suggestions and ratings consider the pattern of historical use, and not just the policy configuration.
-* Deliverable 4: Add useage summarization, to make Dynamic Analysis more efficient, especially in multi-datacenter scenario.
+* **Complete mediation**
+  - Vault Advisor can report on lease use on secret and authentication tokens (TTLs and actual renewal statistics), to identify users and secrets that currently have no TTL or could be configured to renew more frequently.
+  - QUESTION: Can a lease have no TTL?
+* **Separation of privilege**
+  - Vault Advisor can report on use of multi-user authorization (who, when, latency between first and last user)
+  - QUESTION: Can we find good heuristics for suggesting cases where multi-user auth should be added? 
+* **Least privilege**
+  - Vault Advisor can monitor the actual use of secrets versus the secret access granted by policies, and suggest policy re-writes to reduce the access to the minimum required.
+* **Least common mechanism**
+  - Vault Advisor can identify cases where different policies give access to the same secrets, and suggest policy re-writes to eliminate this sharing.
+* **Psychological acceptability**
+  - Vault Advisor can hep make changes more acceptable, by offering automatic validation, and if necessary explanantions of the consequences of changes.
+  - Vault Advisor should have a measure of the complexity of a proposed change, and if appropriate, offer multiple proposals, at different points in the space of complexity versus reduction in attack surface.
 
-# Design Notes
+These are discussed in detail later on in this document.
 
-## Deliverable 1: Validation and Explanation via Static Analysis
+# Scope of Initial Solution
 
-Effectively this will build `vault plan`, akin to `tf plan` and `nomad plan`:
+The high level approach will be analyis of the Vault configuration and usage patterns, to find opportunities for improved configuration. But within this, there are many possible solutions. We scope the initial solution as follows:
 
-* Changes are proposed by users (security team and others with delegated permissions).
-* Mulitple changes may be evaluated independently.
-* Changes may be chained: Evaluate one change using the successfully application of another change as the starting point.
+## Dynamic Analysis
 
-Techniques to consider for Validation include:
+The analysis can consume different inputs:
 
-* SAT-based constraint solving, ala http://emina.github.io/kodkod/
+  * **Static Analysis** considers only the specified Vault configuration.
+  * **Dynamic Analysis** considers both the (static) Vault policy configuration and the pattern of actual use of secrets.
 
-Techniques to consider for Explanation include:
+We choose to do dynamic analysis from the start, as without information on the actual usage, the ability of the system to guide the operators towards a configuration with minimum attack surface is significantly imparied.
 
-* Constraint solving (see above)
-* LIME ([Local Interpretable Model-Agnostic Explanations](https://homes.cs.washington.edu/~marcotcr/blog/lime/))
+## Capability Modification Only
 
-## Deliverable 2: Rating and Suggestion via Static Analysis
+Vault offers a capability-based security model. The security configuration can be viewed as a set of constraints on (princpal, action, object) triples, where the principal is a user or application, the action is a capability and the object is a secret or set of secrets, referenced by a secret path.
 
-* Ranking v absolute rating?
-  * Can rank (relative to one another) even if don't have absolute metrics
-* Multiple metrics
-  * Attack surface
-  * Simplicity
-  * Surveyability
-* Multi-objective optimization
-  * Tuning knobs to choose how to balance competing 
+We choose to only propose changes to capabilities in the first instance, and hence not to propose changes to secrets layout or principals.
 
-### Change Suggestion Service Architecture
+Changes to secrets layout are the obvious next variable to introduce, but will be more disruptivelikely make the problem more complex. Changes to principals are the most challenging to introduce, since Vault is not the system of record in this area. It is not clear that the upcoming work on Vault identity will change this.
 
-Off-line system with multiple components:
+# Prototyping Approach
 
-* Repository
-  * Same as for `vault plan` in Deliverable 1?
-* Proposer
-  * Need to identify a short-list of techniques for exploration of 'neighborhood' of current configuration.
-* Evaluator
-  * Validates and rates
+Vault Advisor will most likely be delivered as a standalone executable, that is securely introduced to the Vault cluster that it will monitor.
 
-Techniques to consider include:
+The question of how Advisor will be connected to Vault needs to be answered, but should be deferred until we have a good understanding of the information that it requires from Vault, and the effect of latency and reliability of delivery of that information on the results that it can deliver.
 
-* memoization, to fingerprint configurations already tried.
+Therefore, in the first instance, Advisor will be prototyped as:
 
-## Deliverable 3: Dynamic Analysis
-
-Use techniques such as summarization or sketching to reduce the volume of data that needs to be retained to reason about usage patterns?
-
-## Deliverable 3: Usage Summarization
-
-To make usage-based analysis more efficient.
-
-Summarization and sketching may also help identify outliers:
-
-* Potential items to drop support for in new proposals.
-* Gateway to anomaly detection.
-
-# Relevant Work
-
-## Adjacent Possibilities (Phrase/Concept)
-
-"The next, realistic thing you can do to move towards your goal. The opposite of a distant ideal."
-
-This might be a nice way to express the idea that Vault Advisor lets security team members chip away, interatively and incrementally, at reducing the attack surface of the systems under management.
-
-This was found in a recent blog post by a Bay Area security blogger:
-<https://danielmiessler.com/blog/adjacent-possible>.
-
-## Attribute Transformation
-
-[Attribute Transformation for Attribute-Based Access Control (PDF)](http://profsandhu.com/confrnc/misconf/abac17-prosun-pre.pdf)
-
-Policy Attributes = attributes used in authorization policies.
-
-Attribute reduction  
-
-* Contract a large set of assignments of non-policy attributes into a possibly smaller set of policy attribute-value assignments.  
-* Useful for
-  * abstracting attributes that are too specific for particular types of objects or users
-  * designing modular authorization policies
-  * modeling hierarchical policies.
-
-Attribute expansion  
-
-* Performing a large set of attribute-value assignments to users or objects from
-a possibly smaller set of assignments.
-  
-Access Control Models
-
-* DAC (Discretionary Access Control) [22] allows resource owners to retain control on their resources by specifying who can or cannot access certain resources.
-* MAC (Mandatory Access Control) [22] has been proposed to address inherent limitations of DAC such as Trojan Horses. Mandates access to resources by pre-specified system policies. 
-
-These models emphasize the specific policies of owner-based discretion for DAC and one-directional information flow in a lattice of security labels for MAC.
-
-* RBAC (Role Based Access Control) [21] is a policy neutral, flexible and administrative-friendly model. Notably RBAC is capable of enforcing both DAC and MAC.
-
-MAC is also commonly referred to as LBAC (Lattice-Based Access Control).
-
-Attribute Based Access Control (ABAC) has gained considerable attention from businesses, academia and standard bodies in recent years [11]. ABAC uses attributes on users, objects and possibly other entities (e.g. context, environment, actions) and specifies rules using these attributes to assert who can have which access permissions (e.g. read, write) on which objects. Several attribute based access control models have been proposed in the literature [5, 15, 23, 27]. These models have been proposed for different application domains including Cloud Infrastructure [6, 3, 14, 20, 25]
-
-## Policy Graphs
-
-[Network Policy Whiteboarding and Composition (PDF)](http://conferences.sigcomm.org/sigcomm/2015/pdf/papers/p373.pdf)
-
-Policy Graph Abstraction (PGA)
-
- * Graphically express network policies and service chain requirements
-   * Directed multi-graph
-   * Vertices represent groups of network endpoints sharing common properties (expressed as _labels_)
-   * Directed edges express intents on communication from source to destination group
- * Different users independently draw policy graphs that can constrain each other.
- * PGA graph captures user intents and invariants
-   * facilitates automatic composition of overlapping policies into a coherent policy
-
-[PGA: Using Graphs to Express and Automatically Reconcile Network Policies (PDF)](http://conferences.sigcomm.org/sigcomm/2015/pdf/papers/p29.pdf)
-
-* Policy composition
-  * preserve correct _joint intent_ without intervention from human oracle
-  * requires capturing _internal intent_ of each policy writer in each policy 
-  * graphical model is simple and intutive
-* Service Chain Analysis
-  * system _must model the behavior of service functions_ for successful composition analysis
-  * c.f. Jeff's idea of executing Vault code to validate policies
-
-## Stepwise Refinement
-
-Cocoon: Correct by Construction Networks using Stepwise Refinement
-
-<https://www.usenix.org/system/files/conference/nsdi17/nsdi17-ryzhyk.pdf>
-
-<https://github.com/ryzhyk/cocoon>
-
-* Design and verification of complex networks using stepwise refinement to move from a high-level specification to the final network implementation.
-* Specify intermediate design levels in a hierarchical design process that delineates the modularity in complicated systems.
-*  Decomposed system cleanly into abstractions for each mechanism.
-*  Separates static design from its dynamically changing configuration. Verify former at design time. Check latter at run time using statically defined invariants.
-
-* Roles model arbitrary entities.
-* Roles have Policies.
-* Assumptions.
-* Refinements replace one or more Roles with more detailed implementation.
-
-Use Sentinel to express constraints in Vault configuration, and then verify or possibly generate configuration?
-
-Corral model checker. Boogie DSL.
-Non-deterministic simulated execution. Boogie's `havoc` operator.
-
-# Backlog
-
-1. Evaluate more Access Control literature
-  * <http://www.codaspy.org/accepted-papers>
-  * [ACM Search](http://dl.acm.org/results.cfm?query=Canonical+Completeness+in+Lattice-Based+Languages+for+Attribute-Based+Access+Control&Go.x=0&Go.y=0)
-  * Patterns for session-based access control
-  * The Traust Authorization Service
-  * RestACL: An Access Control Language for RESTful Services
-  * On Completeness in Languages for Attribute-Based Access Control
-  * Canonical Completeness in Lattice-Based Languages for Attribute-Based Access Control
-
-1. Check PLDI and workshops
-  * http://conf.researchr.org/home/pldi-2016
-  * http://conf.researchr.org/track/pldi-2016/FMS-2016-papers  
-    “While the fields of security and of formal methods/programming languages are thriving areas of computer science, the communities are mostly disjoint, and though there are several formal techniques used for ensuring security, there is no systematic use of emerging powerful formal techniques in security.”  
-  * Report on the NSF Workshop on Formal Methods for Security. Stephen Chong, Harvard University and Joshua Guttman
-
-1. Investigate Group Based Policy (GBP)
-  * Part of Opendaylight opensource SDN initiative
-  * https://wiki.opendaylight.org/view/Group_Policy:Main
-  * https://wiki.opendaylight.org/view/Group_Based_Policy_(GBP)/Theory
-    * Intent System
-    * Promise Theory
-    * 20+ year line of research and production systems
+* A modified version of Vault (in a separate research github repository) that
+  - Tracks the usage statsistics for secrets
+  - Dumps the required statistics in plain text when a new API call is made
+* A standalone executable that consumes the plain text output from the modified Vault instance.
