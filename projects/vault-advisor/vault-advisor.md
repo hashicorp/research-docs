@@ -2,85 +2,129 @@
 
 # Goal
 
-Help security teams make their Vault-managed systems more secure, by validating and suggesting potential configuration changes.
+Vault Advisor's goal is to help security teams make their Vault-managed systems more secure.
 
-A by-product of this automation should be the ability to scale people processes, to manage more and larger systems efficiently and reliably.
+Because it is an automated tool, a by-product should be the ability to scale people processes, to manage more and larger systems efficiently and reliably.
 
-# Relationship to Security Design Principles
+# Approach
 
-Saltzer and Schroeder's 1975 paper [The Protection of Information in Computer Systems](https://www.acsac.org/secshelf/papers/protection_information.pdf) (summary [here](https://courses.cs.washington.edu/courses/cse484/14au/reading/look-at-1975.pdf) and slightly extended [here](https://cryptosmith.com/2013/10/19/security-design-principles/)) proposed 8 design principles for information protection mechanisms:
+The high level approach will be analysis of the Vault configuration and usage patterns, to find opportunities for improved configuration.
 
-* **Economy of mechanism**: A simpler design is easier to test and validate.
-* **Fail-safe defaults**: Default Deny is the canonical example.
-* **Complete mediation**: Ideally, access rights should be validated every time an access occurs. Cached values should be used as little as possible (and we might add, in a principled manner).
-* **Open design**: Following Claude Shannon's 1948 dictum: "The enemy knows the system", security system designs should be subject to open review.
-* **Separation of privilege**: Prefer multi-person authorization.
-* **Least privilege**: Every person and program should operate with as few privileges as possible.
-* **Least common mechanism**: Users and programs should not share mechanisms except where absolutely necessary.
-* **Psychological acceptability**: The policy interface should reflect the user's mental model of protection. Users won't specify protections correctly if the specification doesn't make sense to them.
+Within this, there are many possible solutions. We decompose the problem in a number of ways:
 
-They still make an excellent starting point for secure system design, 42 years later.
+## Best Practice Oriented
 
-Several of the principles are inherent in Vault:
+We will use the familiar concept of best practices, both in development and the user interface of Advisor. To this end, we will:
 
-* **Economy of mechanism**
-  - Vault's APIs and CLI offer a rational set of mechanisms for organizations to build their security workflows on top of.
-  - By delegating many hard parts of the problem (such as selection and implementation of crypto algorithms) to Vault, customers are left with a simpler task in reviewing their system security.
-* **Fail-safe defaults**
-  - Vault's Default Deny approach is the gold-standard for the principle of fail-safe defaults.
-* **Open design**
-  - Vault's core code is open-source, and the full codebase undergoes periodic 3rd party security audit.
+* Build a repository of Vault best practices.
+* Prioritize best practices for prototyping as Advisor features.
+* Present Advisor's recommendations in terms of compliance versus non-compliance to particular best pracitices.
+* Allow the operator to enable and disable recommendations on a per-best practice basis.
 
-The remaining principles can be supported by systems that use Vault, but *only when correctly configured*. This presents an opportunity for Vault Advisor to add value, by automatically detectiing violations of the design principles in Vault configurations and proposing preferable configurations that reduce the scope of or eliminate those violations.
+In this way, a best practice is the Advisor unit of modularity, that we will use to deliver a minimum viable product and then to iteratively add more features.
 
-At a high level, the immediate opportunities for Vault Advisor to help with enforcing the remaining principles are as follows:
+The ultimate goal should be for the best practice repository to be a shared asset, used by product, engineering, sales and marketing to reason and communicate about Vault's features and value proposition.
 
-* **Complete mediation**
-  - Vault Advisor can report on lease use on secret and authentication tokens (TTLs and actual renewal statistics), to identify users and secrets that currently have no TTL or could be configured to renew more frequently.
-  - QUESTION: Can a lease have no TTL?
-* **Separation of privilege**
-  - Vault Advisor can report on use of multi-user authorization (who, when, latency between first and last user)
-  - QUESTION: Can we find good heuristics for suggesting cases where multi-user auth should be added? 
-* **Least privilege**
-  - Vault Advisor can monitor the actual use of secrets versus the secret access granted by policies, and suggest policy re-writes to reduce the access to the minimum required.
-* **Least common mechanism**
-  - Vault Advisor can identify cases where different policies give access to the same secrets, and suggest policy re-writes to eliminate this sharing.
-* **Psychological acceptability**
-  - Vault Advisor can hep make changes more acceptable, by offering automatic validation, and if necessary explanantions of the consequences of changes.
-  - Vault Advisor should have a measure of the complexity of a proposed change, and if appropriate, offer multiple proposals, at different points in the space of complexity versus reduction in attack surface.
+Note: We consciously choose not to introduce the concept of bad practices. In the design pattern community, the concept of anti-patterns sprang up (to mean things that look like good patterns, but in fact are not), but it is not clear how much value they really add. Let's see how far we can go without doing the same.
 
-These are discussed in detail later on in this document.
+## Dynamic Analysis First
 
-# Scope of Initial Solution
+There are two broad choices for the kind of analysis Advisor can perform:
 
-The high level approach will be analyis of the Vault configuration and usage patterns, to find opportunities for improved configuration. But within this, there are many possible solutions. We scope the initial solution as follows:
+- **Static Analysis** considers only the specified Vault configuration.
+- **Dynamic Analysis** considers both the (static) Vault policy configuration and the pattern of actual use of secrets.
 
-## Dynamic Analysis
+We will start with dynamic analysis first, for the following reasons:
 
-The analysis can consume different inputs:
+* Without information on the actual usage, the ability of the system to guide the operators towards a configuration with minimum attack surface is significantly imparied.
+* A lot of value can be delivered based on simple counts and histograms of secrets usage, which should allow us to deliver a Minimum Viable Product more quickly and with lower risk.
+* Static analysis, counter-intutively, is more complex both in terms of the tools required and the need to frame the problem correctly to get useful answers. Building simple dynamic analysis first will help us frame the problem better, and give us more time to investigate the state of the art in static analysis.
 
-  * **Static Analysis** considers only the specified Vault configuration.
-  * **Dynamic Analysis** considers both the (static) Vault policy configuration and the pattern of actual use of secrets.
+## Policy Changes First
 
-We choose to do dynamic analysis from the start, as without information on the actual usage, the ability of the system to guide the operators towards a configuration with minimum attack surface is significantly imparied.
+A Vault configuration reasons about three classes of entity:
 
-## Capability Modification Only
+* **Principals** Users and applications that are clients of Vault
+* **Policies** A set of capabilities
+* **Secrets** The sensitive information being managed via Vault
 
-Vault offers a capability-based security model. The security configuration can be viewed as a set of constraints on (princpal, action, object) triples, where the principal is a user or application, the action is a capability and the object is a secret or set of secrets, referenced by a secret path.
+In the first instance, we will restrict Advisor's recommendations to changes to policies, for the following reasons:
 
-We choose to only propose changes to capabilities in the first instance, and hence not to propose changes to secrets layout or principals.
+* Policies are internal to Vault, and hence can be reconfigured without requiring coordinated changes in external systems.
+* Because policies control access to secrets, changing policies alone should be sufficient to achieve important goals such as minimization of privilege and elimination of unnecessary shared privilege.
 
-Changes to secrets layout are the obvious next variable to introduce, but will be more disruptivelikely make the problem more complex. Changes to principals are the most challenging to introduce, since Vault is not the system of record in this area. It is not clear that the upcoming work on Vault identity will change this.
+It is not clear whether changes to principals or secrets should follow next. We defer the decision for now, but note that:
 
-# Prototyping Approach
+* Both changes to principals and secrets require coordination with external systems
+  - The system of record in the case of principals.
+  - The applications and users that use them, in the case of secrets
+* Therefore, support for workflows that coordinate changes across multiple systems will probably be a part of the solution.
+* Vault is uniquely positioned to secure these change authorization workflows, and hence should probably own them in some way.
 
-Vault Advisor will most likely be delivered as a standalone executable, that is securely introduced to the Vault cluster that it will monitor.
+# Architecture
 
-The question of how Advisor will be connected to Vault needs to be answered, but should be deferred until we have a good understanding of the information that it requires from Vault, and the effect of latency and reliability of delivery of that information on the results that it can deliver.
+Advisor Audit Backend
+* A Vault Audit Backend that consumes all Vault events and relasy them to the stadalone Advisor executable.
+  - Does not send actual secrets to Advisor (only non-sensitive information such as token ids).
 
-Therefore, in the first instance, Advisor will be prototyped as:
+Advisor Executable
+* Consumes Audit Backend output.
+* Computes and store statistics on Vault operations.
+* Can be prompted to run some or all of the available best practice analysis modules, and deliver a report.
+  - As part of analysis, will use its privileges to scan the current state of the Vault configuration, to provide a snapshot to compare to the pattern of actual usage.
 
-* A modified version of Vault (in a separate research github repository) that
-  - Tracks the usage statsistics for secrets
-  - Dumps the required statistics in plain text when a new API call is made
-* A standalone executable that consumes the plain text output from the modified Vault instance.
+Vault Simulator
+* Standalone executable that can drive a Vault instance, to produce audit output to feed to Advisor
+  - Required to produce a variety of audit logs embodying different patterns of usage
+  - Will be used for regression testing.
+  - Possibly also useful as a tool for dialogue with Vault user community, given the impossibility of obtaining real audit logs from external organizations.
+
+# Initial Prototype
+
+To start prototyping, we will address the following best practices:
+
+* Minimal Root Token Use
+* Minimized Capabilities
+
+We will not address:
+
+* Support for Vault High-Availability or Multi-Cluster Replication.
+* High-Availability of Advisor itself.
+* GUI
+
+## Design Notes
+
+* root token initially?
+* ability to list every key in the system
+* read policies: their definition
+* read token information
+* read mount tables?
+
+# Backlog
+
+Potential features and directions of investigation. Out of scope for now. Loosley ordered with nearer-term items first.
+
+## Vault Plan
+
+Terraform and Nomad both offer a 'plan' command, that allows the effects of a potential change to be explored before applying it to the system. A similar tool for Vault would be very attractive.
+
+Potential features include:
+
+* Showing what will be broken
+  - Which users and applications will no longer be able to perform what actions on secrets, that they can currently.
+
+## Time-Based Analysis
+
+If we store histograms and/or sketches or other summarizations of the history of actual usage, we can offer features such as:
+
+* Showing which policies and secrets are no longer being used in the way they were previously.
+  - Globally, or by particular users or applications.
+  - Both increase and decrease.
+  - Beginning of anomaly detection and alerting.
+
+## Workflow Integration
+
+As noted [above](#policy-changes-first), the ability to securely manage workflows involving 3rd parties will be potentially very useful.
+
+* Systems of record for identity and authN.
+* Developers of applications that will be affected by changes to Vault configurations.
