@@ -1,6 +1,6 @@
 # Lifeguard Paper Related Work
 
-## Gossip with Thresholds
+## Gossip without Trust/with Thresholds
 
 ### [ContagAlert: Using Contagion Theory for Adaptive, Distributed Alert Propagation](https://www.ideals.illinois.edu/bitstream/handle/2142/11071/ContagAlert%20Using%20Contagion%20Theory%20for%20Adaptive,%20Distributed%20Alert%20Propagation.pdf?sequence=2)
 
