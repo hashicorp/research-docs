@@ -44,3 +44,9 @@ In Real Life
 
 On-Line
 * [Dist Syst Slack](https://www.the-paper-trail.org/page/dist-sys-slack/)
+
+## HashiCorp's Experience Applying Research to Production
+
+* Armon's PWL talk on Vivaldi.
+* Jon's Gray Failures talk at HashiConfEU 2018.
+* Armon's QCon talk on applying research in the real world.
