@@ -50,8 +50,9 @@ Deadlines for submission and registration. Rankings, based on different measures
   * [Chocolate Consumption, Cognitive Function,
 and Nobel Laureates](http://www.biostat.jhsph.edu/courses/bio621/misc/Chocolate%20consumption%20cognitive%20function%20and%20nobel%20laurates%20(NEJM).pdf)
   * [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson's_paradox)
-  * [The Book of Why](http://bayes.cs.ucla.edu/WHY/) [Summary #1](https://medium.com/datadriveninvestor/goodbye-correlation-say-hello-to-the-era-of-causal-inference-f238065c156b) [Summary #2](https://bigthink.com/errors-we-live-by/judea-pearls-the-book-of-why-brings-news-of-a-new-science-of-causes) by Judea Pearl, who won the Turing Award for his work on Causality.
-
+  * [The Book of Why](http://bayes.cs.ucla.edu/WHY/) by Judea Pearl, who won the Turing Award for his work on Causality.
+    * [A good summary of the key points](https://medium.com/datadriveninvestor/goodbye-correlation-say-hello-to-the-era-of-causal-inference-f238065c156b) 
+    * [Another good summary](https://bigthink.com/errors-we-live-by/judea-pearls-the-book-of-why-brings-news-of-a-new-science-of-causes)
 * Fixating on relative improvements
   * [Scalability! But at what COST?](https://www.usenix.org/system/files/conference/hotos15/hotos15-paper-mcsherry.pdf) [TMP](https://blog.acolyer.org/2015/06/05/scalability-but-at-what-cost/)
 
