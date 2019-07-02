@@ -1,6 +1,6 @@
 # Research Resources
 
-A collection of useful sites, papers and other resources, if you are beginning to look at peer-reviewed research.
+A collection of sites, papers and other resources, that we hope will be of use if you are beginning to look at peer-reviewed research.
 
 ## Research Discovery
 
@@ -19,22 +19,35 @@ Here are our favorites:
 ### Curated Research Discovery and Discussion
 
 * [Papers We Love](https://paperswelove.org/)
-* [The Morning Paper](https://blog.acolyer.org/)
+* [The Morning Paper (TMP)](https://blog.acolyer.org/)
+* [The Paper Trail](https://www.the-paper-trail.org/)
 
-## How to Read and Make Sense of Research
+### Associations and Professional Bodies
+
+* ACM
+  * [Preferred Employer Program](https://www.acm.org/membership/preferred-employer) [Current members](https://www.acm.org/membership/preferred-employers-list)
+* IEEE
+  * Local chapters
+* USENIX
+  * [Corporate memberships and sponsorships](https://www.usenix.org/supporters)
+
+All of them sponsor and/or run a number of conferences on different areas of computer science.
+
+### Conference Tracking Sites
+
+Deadlines for submission and registration. Rankings, based on different measures of 'impact'.
+
+## Reading and Evaluating Research
 
 ### How to Read a Paper
 
 * various articles and papers on the subject.
 * [Bill Gates on how to remember what you read](https://www.cnbc.com/2019/03/21/how-bill-gates-remembers-what-he-reads.html)
 
-### Tools
+### Known Dangers and Biases (aka Here Be Dragons)
 
-* Pen and paper
-* Google Docs
-* Evernote
-* Papers app
-* https://orgmode.org/
+* Confusing relative and absolute
+  * [Scalability! But at what COST?](https://www.usenix.org/system/files/conference/hotos15/hotos15-paper-mcsherry.pdf) [TMP](https://blog.acolyer.org/2015/06/05/scalability-but-at-what-cost/)
 
 ### Places to Discuss Research
 
@@ -45,6 +58,19 @@ In Real Life
 On-Line
 * [Dist Syst Slack](https://www.the-paper-trail.org/page/dist-sys-slack/)
 
+## Keeping Track of It All
+
+### Tools
+
+* Pen and paper
+* Google Docs
+* Evernote
+* Papers app
+* https://orgmode.org/
+
+### Techniques
+
+* 
 ## HashiCorp's Experience Applying Research to Production
 
 * Armon's PWL talk on Vivaldi.
