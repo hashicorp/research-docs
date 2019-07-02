@@ -40,8 +40,7 @@ Deadlines for submission and registration. Rankings, based on different measures
 
 ### How to Read a Paper
 
-* various articles and papers on the subject.
-* [Bill Gates on how to remember what you read](https://www.cnbc.com/2019/03/21/how-bill-gates-remembers-what-he-reads.html)
+* Will add multiple articles and papers on the subject.
 
 ### Known Dangers and Biases (aka Here Be Dragons)
 
@@ -66,17 +65,29 @@ On-Line
 
 ## Keeping Track of It All
 
-### Tools
-
-* Pen and paper
-* Google Docs
-* Evernote
-* Papers app
-* https://orgmode.org/
-
 ### Techniques
 
-* 
+* [Bill Gates on how to remember what you read](https://www.cnbc.com/2019/03/21/how-bill-gates-remembers-what-he-reads.html)
+* Mind mapping
+
+### Tools
+
+Tools are very personal, and actually not the key issue. However, some tools offer some nice features.
+
+* Pen and paper
+  * Never has an outage (unless you spill your drink on it!)
+* Google Docs
+  * Collaborative editing
+  * Search within your Google Drive account
+* Evernote
+  * Web clippers from Chrome and Firefox. Will clip PDFs as well as web pages.
+  * Premium vertsion OCRs all images (including whole pages in scanned PDFs)
+  * Indexes everything. Shows top 3 related items from your personal corpus each time you clip something.
+* Papers app
+* https://orgmode.org/
+  * Simple.
+  * Folding plus links is very true to the original spirit of hypertext.
+
 ## HashiCorp's Experience Applying Research to Production
 
 * Armon's PWL talk on Vivaldi.
