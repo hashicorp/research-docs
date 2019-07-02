@@ -75,6 +75,7 @@ On-Line
 Tools are very personal, and actually not the key issue. However, some tools offer some nice features.
 
 * Pen and paper
+  * The act of writing and/or drawing is widely reported to improve information retention.
   * Never has an outage (unless you spill your drink on it!)
 * Google Docs
   * Collaborative editing
