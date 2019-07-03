@@ -8,13 +8,12 @@ A collection of sites, papers and other resources, that we hope will be of use i
 
 There are a number of websites which index, cross-reference and rank research papers. To get the most out of them, create an account and star/like/follow etc. people and papers you have found insightful or helpful. Then the site will recommend related work to you, often with uncanny accuracy! 
 
-Here are our favorites:
+Some of the best:
 
 * https://scholar.google.com
-* http://www.arxiv-sanity.com/
-  * [Useful introductory video](https://www.youtube.com/watch?v=S2GY3gh6qC8&feature=youtu.be)
-* https://www.researchgate.net/
 * https://www.semanticscholar.org
+* http://www.arxiv-sanity.com/
+* https://www.researchgate.net/
 
 ### Curated Research Discovery and Discussion
 
