@@ -11,7 +11,8 @@ There are a number of websites which index, cross-reference and rank research pa
 Here are our favorites:
 
 * https://scholar.google.com
-* http://www.arxiv-sanity.com/  [(Useful introductory video)](https://www.youtube.com/watch?v=S2GY3gh6qC8&feature=youtu.be)
+* http://www.arxiv-sanity.com/
+  * [Useful introductory video](https://www.youtube.com/watch?v=S2GY3gh6qC8&feature=youtu.be)
 * https://www.researchgate.net/
 * https://www.semanticscholar.org
 
