@@ -50,6 +50,10 @@ There are many different formats for citations and their associated references. 
 * IEEE
 * USENIX
 
+Irrespective of their format, references act as directed edges in a vast knowledge graph, known as The Citation Graph.
+
+The Citation Graph has been called "[one of humankind's most important intellectual achievements](https://boingboing.net/2018/04/14/open-graphs.html)" (by Dario Taraborelli (@readermeter), the Director of Research at the @Wikimedia Foundation).
+
 ### Known Dangers and Biases (aka Here Be Dragons)
 
 * Mistaking correlation for causality
