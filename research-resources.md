@@ -42,6 +42,14 @@ Deadlines for submission and registration. Rankings, based on different measures
 
 * Will add multiple articles and papers on the subject.
 
+### Decoding and Mining References
+
+There are many different formats for citations and their associated references. Different publication venues have their own style requirements:
+
+* [ACM Citation Style and Reference Formats](https://www.acm.org/publications/authors/reference-formatting)
+* IEEE
+* USENIX
+
 ### Known Dangers and Biases (aka Here Be Dragons)
 
 * Mistaking correlation for causality
