@@ -29,7 +29,11 @@ Some of the best:
 
 ### Curated Research Discovery and Discussion
 
-* [Papers We Love](https://paperswelove.org/)
+* [Papers We Love (PWL)](https://paperswelove.org/)
+  * [Curated collection of papers grouped by research topic](https://github.com/papers-we-love/papers-we-love
+  * [List of local chapters that meet in person](https://github.com/papers-we-love/papers-we-love/blob/master/README.md)
+  * [Partial collection of videos](https://www.youtube.com/user/PapersWeLove). 
+  * Follow [PWL on Twitter](https://twitter.com/papers_we_love?lang=en) and check the Meetup histories of specific chapters to see if there is a video of a talk on paper you find in the repo that isn't found by the above methods.
 * [The Morning Paper (TMP)](https://blog.acolyer.org/)
 * [The Paper Trail](https://www.the-paper-trail.org/)
 
@@ -38,7 +42,7 @@ Some of the best:
 * ACM
   * [Preferred Employer Program](https://www.acm.org/membership/preferred-employer) [Current members](https://www.acm.org/membership/preferred-employers-list)
 * IEEE
-  * Local chapters
+  * Local chapters for members
 * USENIX
   * [Corporate memberships and sponsorships](https://www.usenix.org/supporters)
 
@@ -70,6 +74,7 @@ and Nobel Laureates](http://www.biostat.jhsph.edu/courses/bio621/misc/Chocolate%
 
 In Real Life
 * [Papers We Love](https://paperswelove.org/)
+  * [List of local chapters that meet in person](https://github.com/papers-we-love/papers-we-love/blob/master/README.md)
   * They have a conference too. [PWLConf](https://pwlconf.org/)
 
 On-Line
