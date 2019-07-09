@@ -37,6 +37,10 @@ Some of the best:
 * [The Morning Paper (TMP)](https://blog.acolyer.org/)
 * [The Paper Trail](https://www.the-paper-trail.org/)
 
+You can also find lists of papers relevant to a topic by doing a web search for the topic (or combinations of key words releated to the topic) and adding "bibliograpy" or "reading list" to the end. Some of these bibliographies were themselves published via peer-reviewed publication, which means multiple reviewers should have reviewed them and decided they are a decent representation of work in that space.
+
+There is even a [website that curates lists of bibliopgraphies](https://liinwww.ira.uka.de/bibliography/index.html) by research topic.
+
 ### Associations and Professional Bodies
 
 * ACM
