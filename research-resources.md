@@ -83,7 +83,14 @@ Digitization has lowered the material cost of distributing academic papers, just
 
 ### How to Read a Paper
 
-* Will add multiple articles and papers on the subject.
+There are many good guides on how to read academic papers. You will develop your own methiod, but each of them can give you giid suggestions to try:
+
+* https://web.stanford.edu/class/ee384m/Handouts/HowtoReadPaper.pdf
+* https://www.eecs.harvard.edu/~michaelm/postscripts/ReadPaper.pdf
+
+Advice on how to write a good paper also gives you insight into how to read a paper:
+
+* [How (and How Not) to Write a Good Systems Paper](http://msrsvc.org/roylevin/How%20(and%20How%20Not)%20to%20Write%20a%20Good%20Systems%20Paper.htm)
 
 ### Known Dangers and Biases (aka Here Be Dragons)
 
