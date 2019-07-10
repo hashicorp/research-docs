@@ -69,6 +69,16 @@ Other sites focus on tracking the deadlines for submission to upcoming conferenc
 
 Any of these can be used to discover conferences you were not previopusly aware of.
 
+### Open Access
+
+Digitization has lowered the material cost of distributing academic papers, just has it has other forms of media. There is an active debate going on around the extent to which organizations can and should be allowed to charge for access to content. Conferences and the review process still have high costs. Should this be subsizided by charging for access to papers, or by other means? HashiCorp is committed to open access. Please educate yourself and make an informed decision regarding paying for access to academic content.
+
+* https://en.wikipedia.org/wiki/The_Cost_of_Knowledge
+* https://en.wikipedia.org/wiki/Serials_crisis
+* https://www.enago.com/academy/why-researchers-should-use-pre-print-repositories/
+* https://www.theguardian.com/science/political-science/2018/jun/29/elsevier-are-corrupting-open-science-in-europe
+* https://www.enago.com/academy/move-boycott-elsevier-journals-deal-near-dead/
+
 ## Reading and Evaluating Research
 
 ### How to Read a Paper
