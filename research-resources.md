@@ -112,7 +112,6 @@ On-Line
 ### Techniques
 
 * [Bill Gates on how to remember what you read](https://www.cnbc.com/2019/03/21/how-bill-gates-remembers-what-he-reads.html)
-* Mind mapping
 
 ### Tools
 
@@ -130,11 +129,10 @@ Tools are very personal, and actually not the key issue. However, some tools off
   * Indexes everything. Shows top 3 related items from your personal corpus each time you clip something.
 * Papers app
 * https://orgmode.org/
-  * Simple.
-  * Folding plus links is very true to the original spirit of hypertext.
 
 ## HashiCorp's Experience Applying Research to Production
 
-* Armon's PWL talk on Vivaldi.
-* Jon's Gray Failures talk at HashiConfEU 2018.
-* Armon's QCon talk on applying research in the real world.
+* [Armon Dadgar at PWL SF on Vivaldi: Decentralized Network Coordinate System](https://youtu.be/AszPoJjWK9Q?)
+* [Preventing Security Incidents By Automating Policy Optimization](https://youtu.be/C7AHGPxkMh0)
+* [Using Randomized Communication for Robust, Scalable Systems](https://www.infoq.com/presentations/randomized-communication-hashicorp-consul/)
+* [From the first photocopy to modern failure detection in distributed systems](https://youtu.be/4moHicXPXfA)
