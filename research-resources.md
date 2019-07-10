@@ -36,7 +36,7 @@ There are many academics, engineers and other interested individuals who publish
 * [The Morning Paper (TMP)](https://blog.acolyer.org)
   * Follow [Adrian on Twitter](https://twitter.com/adriancolyer)
 * [Papers We Love (PWL)](https://paperswelove.org/)
-  * [Curated collection of papers grouped by research topic](https://github.com/papers-we-love/papers-we-love
+  * [Curated collection of papers grouped by research topic](https://github.com/papers-we-love/papers-we-love)
   * [List of local chapters that meet in person](https://github.com/papers-we-love/papers-we-love/blob/master/README.md)
   * [Partial collection of videos](https://www.youtube.com/user/PapersWeLove). 
   * Follow [PWL on Twitter](https://twitter.com/papers_we_love?lang=en) and check the Meetup histories of specific chapters to see if there is a video of a talk on paper you find in the repo that isn't found by the above methods.
