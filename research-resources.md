@@ -33,7 +33,7 @@ Some of the best:
 
 There are many academics, engineers and other interested individuals who publish personal selections of research that are relevant to their specialism or interests. Some of the ones HashiCorp consults most frequently are:
 
-* [The Morning Paper (TMP)](https://blog.acolyer.org by Adrian Colyer
+* [The Morning Paper (TMP)](https://blog.acolyer.org)
   * Follow [Adrian on Twitter](https://twitter.com/adriancolyer)
 * [Papers We Love (PWL)](https://paperswelove.org/)
   * [Curated collection of papers grouped by research topic](https://github.com/papers-we-love/papers-we-love
