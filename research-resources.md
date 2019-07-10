@@ -31,15 +31,18 @@ Some of the best:
 
 ### Curated Research Discovery and Discussion
 
+There are many academics, engineers and other interested individuals who publish personal selections of research that are relevant to their specialism or interests. Some of the ones HashiCorp consults most frequently are:
+
+* [The Morning Paper (TMP)](https://blog.acolyer.org by Adrian Colyer
+  * Follow [Adrian on Twitter](https://twitter.com/adriancolyer)
 * [Papers We Love (PWL)](https://paperswelove.org/)
   * [Curated collection of papers grouped by research topic](https://github.com/papers-we-love/papers-we-love
   * [List of local chapters that meet in person](https://github.com/papers-we-love/papers-we-love/blob/master/README.md)
   * [Partial collection of videos](https://www.youtube.com/user/PapersWeLove). 
   * Follow [PWL on Twitter](https://twitter.com/papers_we_love?lang=en) and check the Meetup histories of specific chapters to see if there is a video of a talk on paper you find in the repo that isn't found by the above methods.
-* [The Morning Paper (TMP)](https://blog.acolyer.org/)
 * [The Paper Trail](https://www.the-paper-trail.org/)
 
-You can also find lists of papers relevant to a topic by doing a web search for the topic (or combinations of key words releated to the topic) and adding "bibliograpy" or "reading list" to the end. Some of these bibliographies were themselves published via peer-reviewed publication, which means multiple reviewers should have reviewed them and decided they are a decent representation of work in that space.
+You can also find lists of papers relevant to a topic by doing a web search for the topic (or combinations of key words releated to the topic) and adding "bibliograpy", "reading list" or "survey" to the end. Many of these bibliographies and surverys were themselves published via peer-reviewed publication, which means multiple reviewers should have reviewed them and decided they are a decent representation of work in that space.
 
 There is even a [website that curates lists of bibliopgraphies](https://liinwww.ira.uka.de/bibliography/index.html) by research topic.
 
@@ -56,7 +59,15 @@ All of them sponsor and/or run a number of conferences on different areas of com
 
 ### Conference Tracking Sites
 
-Deadlines for submission and registration. Rankings, based on different measures of 'impact'.
+There are many sites that use different methodologies to rank academic conferences (usually based on some measure of 'impact'), including computer science conferences. For example:
+
+* [Top Computer Science Conferences](http://www.guide2research.com/topconf/)
+
+Other sites focus on tracking the deadlines for submission to upcoming conferences. For example:
+
+* [Computer Science CFPs](http://www.wikicfp.com/cfp/call?conference=computer%20science)
+
+Any of these can be used to discover conferences you were not previopusly aware of.
 
 ## Reading and Evaluating Research
 
